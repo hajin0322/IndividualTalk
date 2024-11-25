@@ -9,7 +9,7 @@ String -> agentName, allMessages, lastMessage, lastDate, unreadNumber
 dynamic -> each type of instances
 
 [log_$agentName.json = List<Map<String, dynamic>]
-String -> agentName, ??
+String -> agentName, String ->
 */
 
 class FileHelper {

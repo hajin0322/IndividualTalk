@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:individual_project/base/utils/file_helper.dart';
 
-enum ChatRoomSortOption { name, date }
+import 'file_helper.dart';
 
 class ChatRoomProvider with ChangeNotifier {
   List<Map<String, dynamic>> chatRooms = [];
@@ -11,8 +10,8 @@ class ChatRoomProvider with ChangeNotifier {
   }
 
   Future<void> loadChatRooms() async {
-    chatRooms = await FileHelper.readChatList();
     notifyListeners();
+    chatRooms = await FileHelper.readChatList();
   }
 
   void addNewChatRoom(String agentName) async {
@@ -24,35 +23,36 @@ class ChatRoomProvider with ChangeNotifier {
       "unreadNumber": 0,
       "isPinned": false
     };
-    chatRooms.add(newRoom);
+    chatRooms = [...chatRooms, newRoom];
+    notifyListeners();
     await FileHelper.writeChatList(chatRooms);
     await FileHelper.writeChatRoom(agentName, []);
-    notifyListeners();
   }
 
-  void stickOnTop(String agentName, ChatRoomSortOption sortOption) async {
+  void stickOnTop(String agentName) async {
     final index =
         chatRooms.indexWhere((room) => room["agentName"] == agentName);
     if (index != -1) {
-      chatRooms[index]['isPinned'] = true;
-      await FileHelper.writeChatList(chatRooms);
-      sortChatRooms(sortOption: sortOption);
+      final pinnedRoom = chatRooms.removeAt(index);
+      pinnedRoom['isPinned'] = true;
+      chatRooms.insert(0, pinnedRoom);
       notifyListeners();
+      await FileHelper.writeChatList(chatRooms);
     }
   }
 
-  void sortChatRooms({required ChatRoomSortOption sortOption}) async {
-    chatRooms.sort((a, b) {
-      if (a['isPinned'] && !b['isPinned']) return -1;
-      if (!a['isPinned'] && b['isPinned']) return 1;
-
-      if (sortOption == ChatRoomSortOption.name) {
-        return a['agentName'].compareTo(b['agentName']);
-      } else if (sortOption == ChatRoomSortOption.date) {
-        return DateTime.parse(b['lastDate'])
-            .compareTo(DateTime.parse(a['lastDate']));
-      }
-      return 0;
-    });
+  void updateChatRoomInfo(String agentName, Map<String, dynamic> info) async {
+    final index = chatRooms.indexWhere((room) => room['agentName'] == agentName);
+    if (index != -1) {
+      final updatedRoom = {...chatRooms[index], ...info};
+      chatRooms = [
+        ...chatRooms.sublist(0, index),
+        updatedRoom,
+        ...chatRooms.sublist(index + 1)
+      ];
+      print("updateChatRoomInfo $chatRooms");
+      notifyListeners();
+      await FileHelper.writeChatList(chatRooms);
+    }
   }
 }

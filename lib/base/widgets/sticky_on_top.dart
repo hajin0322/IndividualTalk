@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:individual_project/base/utils/chat_room_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../res/styles/app_styles.dart';
+import '../utils/chat_room_provider.dart';
 
 class StickyOnTop extends StatelessWidget {
   final String agentName;
-  final ChatRoomSortOption sortOption;
 
-  const StickyOnTop(
-      {super.key, required this.agentName, required this.sortOption});
+  const StickyOnTop({super.key, required this.agentName});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class StickyOnTop extends StatelessWidget {
             onPressed: () {
               final provider =
                   Provider.of<ChatRoomProvider>(context, listen: false);
-              provider.stickOnTop(agentName, sortOption);
+              provider.stickOnTop(agentName);
               Navigator.of(context).pop("yes");
             },
             child: const Text("Yes")),

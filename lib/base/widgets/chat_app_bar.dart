@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import '../res/styles/app_styles.dart';
 
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChatAppBar({super.key});
+  final String agentName;
+
+  const ChatAppBar({super.key, required this.agentName});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppStyles.chatBackground,
       title: Text(
-        "AI",
+        agentName,
         style: AppStyles.chatbar,
       ),
       leading: IconButton(

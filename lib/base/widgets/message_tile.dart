@@ -58,9 +58,9 @@ class MessageTile extends StatelessWidget {
             ]),
         onTap: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ChatRoom()),
-          );
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatRoom(agentName: agentName)));
         });
   }
 }

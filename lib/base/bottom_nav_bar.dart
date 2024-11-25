@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:individual_project/base/utils/chat_room_provider.dart';
+
+import '../base/utils/chat_room_provider.dart';
 import 'package:provider/provider.dart';
 import '../base/widgets/agent_name.dart';
 import './widgets/top_app_bar.dart';
@@ -58,7 +59,7 @@ class _BottomNavBarState extends State<BottomNavBar>
               controller: _tabController,
               labelColor: Colors.brown,
               labelStyle:
-              const TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
+                  const TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
               unselectedLabelColor: Colors.grey,
               indicatorColor: Colors.transparent,
               tabs: const [

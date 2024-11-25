@@ -5,10 +5,10 @@ import 'dart:convert';
 class ApiService {
   static const String _apiUrl =
       'https://api.groq.com/openai/v1/chat/completions';
-  static final String? _apiKey = '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';
+  static final String? _apiKey = dotenv.env['API_KEY'];
 
-
-  static Future<String?> sendMessageToAPI(String userMessage) async {
+  static Future<String?> sendMessageToAPI(
+      String userMessage, String agentName) async {
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $_apiKey'
@@ -23,6 +23,7 @@ class ApiService {
 
     try {
       final response =
+          await http.post(Uri.parse(_apiUrl), headers: headers, body: body);
       await http.post(Uri.parse(_apiUrl), headers: headers, body: body);
 
       if (response.statusCode == 200) {
