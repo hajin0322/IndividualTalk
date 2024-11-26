@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../base/utils/chat_room_provider.dart';
 import 'package:provider/provider.dart';
 import '../base/widgets/agent_name.dart';
 import './widgets/top_app_bar.dart';
-
 import '../screen/sort_date.dart';
 import '../screen/sort_name.dart';
 
@@ -18,13 +16,11 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late ChatRoomProvider _chatRoomProvider;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _chatRoomProvider = ChatRoomProvider();
   }
 
   @override
@@ -38,40 +34,40 @@ class _BottomNavBarState extends State<BottomNavBar>
         context: context,
         builder: (BuildContext context) {
           return const AgentName();
-        }).then((agentName) {
+        }
+    ).then((agentName) {
       if (mounted && agentName != null) {
-        _chatRoomProvider.addNewChatRoom(agentName);
+        // Provider를 통해 채팅방 추가
+        Provider.of<ChatRoomProvider>(context, listen: false).addNewChatRoom(agentName);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ChatRoomProvider>.value(
-      value: _chatRoomProvider,
-      child: Scaffold(
-        appBar: TopAppBar(onChatBubblePressed: _showAgentNameDialog),
-        body: TabBarView(
-            controller: _tabController,
-            children: const [SortName(), SortDate()]),
-        bottomNavigationBar: Material(
-          child: TabBar(
-              controller: _tabController,
-              labelColor: Colors.brown,
-              labelStyle:
-                  const TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Colors.transparent,
-              tabs: const [
-                Tab(
-                  text: 'Sort by name',
-                  icon: Icon(Icons.person),
-                ),
-                Tab(
-                  text: 'Sort by date',
-                  icon: Icon(Icons.message),
-                )
-              ]),
+    return Scaffold(
+      appBar: TopAppBar(onChatBubblePressed: _showAgentNameDialog),
+      body: TabBarView(
+        controller: _tabController,
+        children: const [SortName(), SortDate()],
+      ),
+      bottomNavigationBar: Material(
+        child: TabBar(
+          controller: _tabController,
+          labelColor: Colors.brown,
+          labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
+          unselectedLabelColor: Colors.grey,
+          indicatorColor: Colors.transparent,
+          tabs: const [
+            Tab(
+              text: 'Sort by name',
+              icon: Icon(Icons.person),
+            ),
+            Tab(
+              text: 'Sort by date',
+              icon: Icon(Icons.message),
+            )
+          ],
         ),
       ),
     );
