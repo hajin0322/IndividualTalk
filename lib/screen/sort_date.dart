@@ -10,10 +10,11 @@ class SortDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chatRoomProvider = Provider.of<ChatRoomProvider>(context, listen: true);
+    final chatRoomProvider =
+        Provider.of<ChatRoomProvider>(context, listen: true);
 
     final chatRooms =
-    List<Map<String, dynamic>>.from(chatRoomProvider.chatRooms);
+        List<Map<String, dynamic>>.from(chatRoomProvider.chatRooms);
 
     chatRooms.sort((a, b) {
       if (!a['isPinned'] && !b['isPinned']) {
@@ -22,7 +23,6 @@ class SortDate extends StatelessWidget {
       }
       return 0;
     });
-    print('date added');
 
     return ListView.builder(
         itemCount: chatRooms.length,
@@ -32,8 +32,8 @@ class SortDate extends StatelessWidget {
               onLongPress: () => showDialog(
                   context: context,
                   builder: (context) => StickyOnTop(
-                    agentName: chatRoom['agentName'],
-                  )),
+                        agentName: chatRoom['agentName'],
+                      )),
               child: MessageTile(
                 key: ValueKey(
                     chatRoom['agentName'] + chatRoom['isPinned'].toString()),
@@ -43,8 +43,7 @@ class SortDate extends StatelessWidget {
                 lastDate: DateTime.parse(chatRoom['lastDate']),
                 unreadNumber: chatRoom['unreadNumber'],
                 isPinned: chatRoom['isPinned'],
-              )
-          );
+              ));
         });
   }
 }

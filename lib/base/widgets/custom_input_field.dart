@@ -52,15 +52,15 @@ class _CustomInputField extends State<CustomInputField> {
               child: TextField(
             controller: _controller,
             maxLines: null,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               hintText: "Input message here",
-              contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
-              suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.emoji_emotions_outlined)),
+              contentPadding: EdgeInsets.symmetric(vertical: 12.0),
             ),
           )),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.emoji_emotions_outlined)),
           GestureDetector(
             onTap: _handleSend,
             child: Container(

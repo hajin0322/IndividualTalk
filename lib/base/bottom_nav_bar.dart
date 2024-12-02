@@ -31,6 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar>
 
   void _showAgentNameDialog() {
     showDialog<String>(
+      barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return const AgentName();

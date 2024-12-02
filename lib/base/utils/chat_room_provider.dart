@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'file_helper.dart';
+import 'shared_preferences.dart';
 
 class ChatRoomProvider with ChangeNotifier {
   List<Map<String, dynamic>> chatRooms = [];
@@ -11,7 +11,7 @@ class ChatRoomProvider with ChangeNotifier {
 
   Future<void> loadChatRooms() async {
     notifyListeners();
-    chatRooms = await FileHelper.readChatList();
+    chatRooms = await SharedPreferences.readChatList();
   }
 
   void addNewChatRoom(String agentName) async {
@@ -21,12 +21,13 @@ class ChatRoomProvider with ChangeNotifier {
       "lastMessage": "",
       "lastDate": DateTime.now().toString(),
       "unreadNumber": 0,
-      "isPinned": false
+      "isPinned": false,
+      "stickyMessage": ''
     };
     chatRooms = [...chatRooms, newRoom];
     notifyListeners();
-    await FileHelper.writeChatList(chatRooms);
-    await FileHelper.writeChatRoom(agentName, []);
+    await SharedPreferences.writeChatList(chatRooms);
+    await SharedPreferences.writeChatRoom(agentName, []);
   }
 
   void stickOnTop(String agentName) async {
@@ -37,7 +38,7 @@ class ChatRoomProvider with ChangeNotifier {
       pinnedRoom['isPinned'] = true;
       chatRooms.insert(0, pinnedRoom);
       notifyListeners();
-      await FileHelper.writeChatList(chatRooms);
+      await SharedPreferences.writeChatList(chatRooms);
     }
   }
 
@@ -52,7 +53,7 @@ class ChatRoomProvider with ChangeNotifier {
       ];
       print("updateChatRoomInfo $chatRooms");
       notifyListeners();
-      await FileHelper.writeChatList(chatRooms);
+      await SharedPreferences.writeChatList(chatRooms);
     }
   }
 }

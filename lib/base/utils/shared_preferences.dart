@@ -12,7 +12,7 @@ dynamic -> each type of instances
 String -> agentName, String ->
 */
 
-class FileHelper {
+class SharedPreferences {
   static Future<File> _getLocalFile(String filename) async {
     final directory = await getDownloadsDirectory();
     if (directory == null) {
